@@ -1,24 +1,67 @@
 {% extends "base.html" %}
 
-{% block content %}
-<h2>Доступные квизы:</h2>
+{% block title %}Главная | Python Quiz Studio{% endblock %}
 
-<div class="quizzes">
-    {% for quiz in quizzes %}
-    <div class="quiz-card">
-        <h3>{{ quiz.title }}</h3>
-        <p>{{ quiz.description }}</p>
-        <p>Вопросов: {{ quiz.questions|length }}</p>
-        <a href="{{ url_for('take_quiz', quiz_id=quiz.id) }}" class="btn">
-            Пройти квиз
-        </a>
+{% block content %}
+<section class="hero">
+    <h2>Python Quiz Studio</h2>
+    <p>
+        Создавайте квизы с кодом на Python прямо в браузере:
+        от простых тестов до интерактивных задач с автопроверкой.
+    </p>
+    <div class="hero-actions">
+        <a href="{{ url_for('create_profile') }}" class="btn">Начать бесплатно</a>
+        <a href="#complexity" class="btn btn-secondary">Оценка сложности</a>
     </div>
-    {% endfor %}
-</div>
+</section>
+
+<section id="complexity" class="info-grid">
+    <article class="info-card-main">
+        <h3>Насколько это сложно?</h3>
+        <p><strong>MVP за 2–4 недели</strong> для 1 разработчика:</p>
+        <ul>
+            <li>Редактор кода в браузере.</li>
+            <li>Выполнение Python-кода в изолированной среде.</li>
+            <li>Ограничения по времени/памяти.</li>
+            <li>Сохранение и запуск решений пользователей.</li>
+        </ul>
+        <p><strong>Production-версия</strong> обычно занимает 2–3+ месяца:</p>
+        <ul>
+            <li>Очереди задач, масштабирование воркеров.</li>
+            <li>Безопасность (sandbox, блокировка сети, лимиты ресурсов).</li>
+            <li>Логи, мониторинг, защита от злоупотреблений.</li>
+        </ul>
+    </article>
+
+    <article class="info-card-main">
+        <h3>Рекомендуемая архитектура</h3>
+        <ol>
+            <li>Frontend: редактор кода + интерфейс квиза.</li>
+            <li>API Flask: принимает код и метаданные запуска.</li>
+            <li>Runner-service: выполняет код в контейнере (Docker/isolate).</li>
+            <li>Хранилище: пользователи, квизы, попытки, результаты.</li>
+        </ol>
+        <p class="hint">Важно: не выполняйте пользовательский Python в процессе Flask напрямую.</p>
+    </article>
+</section>
+
+<section>
+    <h3>Доступные квизы</h3>
+    <div class="quizzes">
+        {% for quiz in quizzes %}
+        <div class="quiz-card">
+            <h4>{{ quiz.title }}</h4>
+            <p>{{ quiz.description }}</p>
+            <p>Вопросов: {{ quiz.questions|length }}</p>
+            <a href="{{ url_for('take_quiz', quiz_id=quiz.id) }}" class="btn">Пройти квиз</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
 
 {% if not session.username %}
 <div class="notice">
-    <p>Создайте профиль, чтобы сохранять результаты квизов!</p>
+    <p>Создайте профиль, чтобы сохранять результаты и позже публиковать свои Python-квизы.</p>
     <a href="{{ url_for('create_profile') }}" class="btn">Создать профиль</a>
 </div>
 {% endif %}
