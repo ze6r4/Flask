@@ -255,3 +255,66 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+
+.compiler-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.compiler-header h2 {
+    color: #2f4f83;
+}
+
+.compiler-description {
+    margin-bottom: 15px;
+}
+
+.compiler-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.editor-panel,
+.console-panel {
+    border: 1px solid #d5dbe6;
+    border-radius: 6px;
+    background: #fdfdff;
+    padding: 12px;
+}
+
+#python-editor {
+    width: 100%;
+    min-height: 420px;
+    border: 1px solid #cfd8ea;
+    border-radius: 6px;
+    padding: 10px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    background: #f7faff;
+}
+
+#python-console {
+    min-height: 420px;
+    max-height: 420px;
+    overflow: auto;
+    padding: 10px;
+    border-radius: 6px;
+    background: #111827;
+    color: #d1fae5;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+    .compiler-layout {
+        grid-template-columns: 1fr;
+    }
+}
