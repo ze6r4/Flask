@@ -1,84 +1,47 @@
 {% extends "base.html" %}
 
-{% block title %}Онлайн-компилятор Python{% endblock %}
+{% block title %}Персонажи Гарри Поттера{% endblock %}
 
 {% block content %}
-<section class="compiler-header">
-    <h2>Онлайн-компилятор Python</h2>
-    <button id="run-python" class="btn">▶ Запустить код</button>
-</section>
+<h2>Персонажи Гарри Поттера</h2>
 
-<p class="compiler-description">
-    Учебный режим: слева код квиза, справа консоль. Шаблон ниже — обычное консольное приложение на Python.
-</p>
+{% if not session.username %}
+<div class="notice">
+    <p>Сначала зарегистрируйтесь, чтобы смотреть карточки персонажей.</p>
+    <a href="{{ url_for('create_profile') }}" class="btn">Зарегистрироваться</a>
+</div>
+{% else %}
+<div class="characters-grid">
+    {% for character in characters %}
+    <button class="character-card" data-target="article-{{ character.id }}">
+        <h3>{{ character.name }}</h3>
+        <p>{{ character.short }}</p>
+    </button>
+    {% endfor %}
+</div>
 
-<section class="compiler-layout">
-    <div class="editor-panel">
-        <h3>Редактор кода</h3>
-        <textarea id="python-editor" spellcheck="false">def run_quiz():
-    print("=== Мини-квиз по Python ===")
+<div class="character-articles">
+    {% for character in characters %}
+    <article id="article-{{ character.id }}" class="character-article" hidden>
+        <h3>{{ character.name }}</h3>
+        <p>{{ character.article }}</p>
+    </article>
+    {% endfor %}
+</div>
 
-    name = input("Как тебя зовут? ")
-    score = 0
-
-    answer_1 = input("1) Что возвращает len('cat')? ")
-    if answer_1.strip() == "3":
-        score += 1
-
-    answer_2 = input("2) Какой тип у {1, 2, 3}? (set/list/dict) ")
-    if answer_2.strip().lower() == "set":
-        score += 1
-
-    print(f"\\n{name}, твой результат: {score}/2")
-
-
-run_quiz()</textarea>
-    </div>
-
-    <div class="console-panel">
-        <h3>Консоль</h3>
-        <pre id="python-console">Нажмите «Запустить код», чтобы выполнить шаблон квиза.</pre>
-    </div>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
 <script>
-    const runButton = document.getElementById('run-python');
-    const editor = document.getElementById('python-editor');
-    const output = document.getElementById('python-console');
+    const cards = document.querySelectorAll('.character-card');
+    const articles = document.querySelectorAll('.character-article');
 
-    function appendOutput(text) {
-        output.textContent += text;
-    }
+    cards.forEach((card) => {
+        card.addEventListener('click', () => {
+            const targetId = card.dataset.target;
 
-    function builtinRead(x) {
-        if (Sk.builtinFiles === undefined || Sk.builtinFiles['files'][x] === undefined) {
-            throw new Error("Файл не найден: '" + x + "'");
-        }
-        return Sk.builtinFiles['files'][x];
-    }
-
-    runButton.addEventListener('click', async () => {
-        output.textContent = '';
-
-        Sk.pre = 'python-console';
-        Sk.configure({
-            output: appendOutput,
-            read: builtinRead,
-            inputfunTakesPrompt: true,
-            inputfun: (promptText) => {
-                const userInput = window.prompt(promptText) ?? '';
-                appendOutput(promptText + userInput + '\n');
-                return Promise.resolve(userInput);
-            }
+            articles.forEach((article) => {
+                article.hidden = article.id !== targetId;
+            });
         });
-
-        try {
-            await Sk.misceval.asyncToPromise(() => Sk.importMainWithBody('<stdin>', false, editor.value, true));
-        } catch (error) {
-            appendOutput('\n[Ошибка] ' + error.toString());
-        }
     });
 </script>
+{% endif %}
 {% endblock %}
