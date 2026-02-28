@@ -2,40 +2,22 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Flask Персонажи{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Галерея персонажей</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <header>
-        <h1>🎭 Персонажи</h1>
-        <nav>
-            <a href="{{ url_for('index') }}">Главная</a>
-            <a href="{{ url_for('create_profile') }}">Создать профиль</a>
-            {% if session.username %}
-                <a href="{{ url_for('profile') }}">Профиль</a>
-                <a href="{{ url_for('logout') }}">Выйти</a>
-                <span>Привет, {{ session.username }}!</span>
-            {% endif %}
-        </nav>
-    </header>
 
-    <main>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="messages">
-                    {% for category, message in messages %}
-                        <div class="flash {{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+<header>
+    <h1>Галерея персонажей</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">Главная</a>
+        <a href="{{ url_for('profile') }}">Форма / Профиль</a>
+    </nav>
+</header>
 
-        {% block content %}{% endblock %}
-    </main>
+<main>
+    {% block content %}{% endblock %}
+</main>
 
-    <footer>
-        <p>Простое Flask приложение с персонажами</p>
-    </footer>
 </body>
 </html>

@@ -1,47 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}Персонажи Гарри Поттера{% endblock %}
-
 {% block content %}
-<h2>Персонажи Гарри Поттера</h2>
 
-{% if not session.username %}
-<div class="notice">
-    <p>Сначала зарегистрируйтесь, чтобы смотреть карточки персонажей.</p>
-    <a href="{{ url_for('create_profile') }}" class="btn">Зарегистрироваться</a>
-</div>
-{% else %}
+<h2>Основные герои</h2>
+
 <div class="characters-grid">
     {% for character in characters %}
-    <button class="character-card" data-target="article-{{ character.id }}">
-        <h3>{{ character.name }}</h3>
-        <p>{{ character.short }}</p>
-    </button>
+        <div class="character-card">
+            <h3>{{ character.name }}</h3>
+            <p>{{ character.description }}</p>
+        </div>
     {% endfor %}
 </div>
 
-<div class="character-articles">
-    {% for character in characters %}
-    <article id="article-{{ character.id }}" class="character-article" hidden>
-        <h3>{{ character.name }}</h3>
-        <p>{{ character.article }}</p>
-    </article>
-    {% endfor %}
-</div>
+<a href="{{ url_for('profile') }}" class="btn">Перейти к форме</a>
 
-<script>
-    const cards = document.querySelectorAll('.character-card');
-    const articles = document.querySelectorAll('.character-article');
-
-    cards.forEach((card) => {
-        card.addEventListener('click', () => {
-            const targetId = card.dataset.target;
-
-            articles.forEach((article) => {
-                article.hidden = article.id !== targetId;
-            });
-        });
-    });
-</script>
-{% endif %}
 {% endblock %}

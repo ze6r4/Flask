@@ -1,28 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Профиль пользователя</h2>
 
-<div class="profile-info">
-    <div class="info-card">
-        <h3>👤 Основная информация</h3>
-        <p><strong>Имя:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email or 'Не указан' }}</p>
-    </div>
-    
-    <div class="info-card">
-        <h3>📊 Результаты квизов</h3>
-        {% if user.last_quiz %}
-            <p><strong>Последний квиз:</strong> {{ user.last_quiz }}</p>
-            <p><strong>Результат:</strong> {{ user.last_result }}</p>
-        {% else %}
-            <p>Вы еще не проходили квизы</p>
-        {% endif %}
-    </div>
-</div>
+<h2>Страница профиля</h2>
 
-<div class="profile-actions">
-    <a href="{{ url_for('index') }}" class="btn">К квизам</a>
-    <a href="{{ url_for('logout') }}" class="btn btn-secondary">Выйти</a>
-</div>
+{% if user.name %}
+    <div class="profile-card">
+        <p><strong>Имя:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+
+    <a href="{{ url_for('profile', edit=1) }}" class="btn">Изменить данные</a>
+
+{% else %}
+    <form method="POST" class="profile-form">
+        <div class="form-group">
+            <label>Имя</label>
+            <input type="text" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <button type="submit" class="btn">Отправить</button>
+    </form>
+{% endif %}
+
 {% endblock %}

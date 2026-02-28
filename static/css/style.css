@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffe6f2;
+}
+
+/* Хедер */
+header {
+    background-color: #ff66b2;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Контент */
+main {
+    background-color: #fff0f6;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Форма */
+.profile-form {
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ff99cc;
+    border-radius: 5px;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-block;
+    background-color: #ff3399;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #e60073;
+}
+
+/* Карточка профиля */
+.profile-card {
+    background-color: #ffd6eb;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+/* Сетка персонажей */
+.characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+/* Карточка персонажа */
+.character-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.character-card h3 {
+    margin-bottom: 8px;
+}
