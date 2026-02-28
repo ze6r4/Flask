@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Flask Квизы{% endblock %}</title>
+    <title>{% block title %}Flask Персонажи{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>🎭 Квизы</h1>
+        <h1>🎭 Персонажи</h1>
         <nav>
             <a href="{{ url_for('index') }}">Главная</a>
             <a href="{{ url_for('create_profile') }}">Создать профиль</a>
@@ -35,7 +35,7 @@
     </main>
 
     <footer>
-        <p>Простое Flask приложение с квизами</p>
+        <p>Простое Flask приложение с персонажами</p>
     </footer>
 </body>
 </html>

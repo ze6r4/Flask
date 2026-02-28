@@ -6,6 +6,33 @@ app.config['SECRET_KEY'] = 'quiz-secret-key'
 # Хранилище пользователей (в памяти)
 users_db = {}
 
+characters = [
+    {
+        'id': 'harry',
+        'name': 'Гарри Поттер',
+        'short': 'Мальчик-который-выжил и главный герой истории.',
+        'article': 'Гарри смелый и упрямый, часто действует сердцем и готов защищать друзей до конца. Он рано сталкивается с потерями, но именно это формирует в нём стойкость и чувство справедливости. На протяжении учёбы в Хогвартсе Гарри учится принимать сложные решения и брать ответственность за других.'
+    },
+    {
+        'id': 'hermione',
+        'name': 'Гермиона Грейнджер',
+        'short': 'Одна из лучших учениц Хогвартса и верный друг.',
+        'article': 'Гермиона умная, дисциплинированная и невероятно трудолюбивая. Она любит порядок, но в критический момент умеет нарушать правила ради правильного поступка. Её знания и логика не раз спасают друзей, а внутренняя принципиальность делает её сильным лидером.'
+    },
+    {
+        'id': 'ron',
+        'name': 'Рон Уизли',
+        'short': 'Лучший друг Гарри из большой семьи Уизли.',
+        'article': 'Рон добрый, эмоциональный и очень преданный. Иногда он сомневается в себе, особенно рядом с более яркими друзьями, но в сложные моменты показывает настоящую храбрость. Его чувство юмора и искренность помогают команде переживать самые тяжёлые периоды.'
+    },
+    {
+        'id': 'snape',
+        'name': 'Северус Снейп',
+        'short': 'Строгий преподаватель зельеварения с непростой судьбой.',
+        'article': 'Снейп выглядит холодным и жёстким, но за этой маской скрывается глубокая личная драма. Он способен на долгую и сложную верность, даже если его поступки окружающим кажутся неоднозначными. История Снейпа показывает, что характер человека не всегда можно оценить по первому впечатлению.'
+    }
+]
+
 sample_quizzes = [
     {
         'id': 1,
@@ -47,10 +74,10 @@ sample_quizzes = [
     }
 ]
 
-# 1. ГЛАВНАЯ СТРАНИЦА - все квизы
+# 1. ГЛАВНАЯ СТРАНИЦА
 @app.route('/')
 def index():
-    return render_template('index.html', quizzes=sample_quizzes)
+    return render_template('index.html', characters=characters)
 
 # 2. ПРОХОЖДЕНИЕ КВИЗА
 @app.route('/quiz/<int:quiz_id>', methods=['GET', 'POST'])
@@ -59,30 +86,30 @@ def take_quiz(quiz_id):
     if not quiz:
         flash('Квиз не найден!', 'error')
         return redirect(url_for('index'))
-    
+
     if request.method == 'POST':
-        
+
         answers = []
         for i, question in enumerate(quiz['questions']):
             answer_index = request.form.get(f'q{i}', type=int)
             if answer_index is not None and 0 <= answer_index < len(question['answers']):
                 answers.append(question['answers'][answer_index]['character'])
-        
+
         # самый частый персонаж
         if answers:
             result = max(set(answers), key=answers.count)
         else:
             result = 'Не определен'
-        
-        
+
+
         username = session.get('username')
         if username and username in users_db:
             users_db[username]['last_quiz'] = quiz['title']
             users_db[username]['last_result'] = result
-        
+
         flash(f'Результат: {result}!', 'success')
         return redirect(url_for('profile'))
-    
+
     return render_template('quiz.html', quiz=quiz)
 
 # 3. ФОРМА СОЗДАНИЯ ПРОФИЛЯ
@@ -91,11 +118,11 @@ def create_profile():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         email = request.form.get('email', '').strip()
-        
+
         if not username:
             flash('Введите имя пользователя!', 'error')
             return render_template('form.html')
-        
+
         users_db[username] = {
             'username': username,
             'email': email,
@@ -103,21 +130,21 @@ def create_profile():
             'last_result': None
         }
         session['username'] = username
-        
+
         flash(f'Профиль {username} создан!', 'success')
         return redirect(url_for('profile'))
-    
+
     return render_template('form.html')
 
 # 4. ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
 @app.route('/profile')
 def profile():
     username = session.get('username')
-    
+
     if not username or username not in users_db:
         flash('Сначала создайте профиль!', 'warning')
         return redirect(url_for('create_profile'))
-    
+
     user_data = users_db[username]
     return render_template('profile.html', user=user_data)
 
